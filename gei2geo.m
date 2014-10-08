@@ -47,7 +47,7 @@ function T1 = gei2geo(mjd, UT)
     T0 = nJulCenturies( mjd2epoch2000( fix(mjd) ) );
     
     % Compute the sidereal time
-    theta = gmSideRealTime(T0, UT) * pi/180;
+    theta = gmSiderealTime(T0, UT) * pi/180;
     
     %
     % The transformation from GEI to GEO, then is
