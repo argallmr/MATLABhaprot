@@ -56,9 +56,9 @@ function T1 = gei2geo(mjd, UT)
     %
     
     % <obliq, X>
-    sintheta = sin(theta);
-    costheta = cos(theta);
-    T1 = [ 1      0          0;    ...
-           0   costheta  sintheta; ...
-           0  -sintheta  costheta];
+    sinTheta = sin(theta);
+    cosTheta = cos(theta);
+    T1 = [ cosTheta  sinTheta  0; ...
+          -sinTheta  cosTheta  0; ...
+              0         0      1];
 end

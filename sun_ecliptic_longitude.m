@@ -41,15 +41,15 @@
 %--------------------------------------------------------------------------
 function eLon = sun_ecliptic_longitude(T0, UT)
 	% Convert degrees to radians.
-    rad_to_deg = pi/180;
+    deg2rad = pi/180;
 
     % Sun's Mean anomoly
-    ma = sun_mean_anomoly(T0, UT) * rad_to_deg;
+    ma = sun_mean_anomoly(T0, UT);
 
     % Mean longitude
-    lambda = sun_mean_longitude(T0, UT) * rad_to_deg;
+    lambda = sun_mean_longitude(T0, UT);
 
     % Ecliptic Longitude
     %   - Force to the range [0, 360)
-    eLon = mod(lambda + (1.915-0.0048*T0)*sin(ma) + 0.020*sin(2*ma), 360);
+    eLon = mod(lambda + (1.915-0.0048*T0)*sin(ma*deg2rad) + 0.020*sin(2*ma*deg2rad), 360);
 end

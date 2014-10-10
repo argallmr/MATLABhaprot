@@ -42,19 +42,19 @@ function T2 = gei2gse(mjd,ut)
     %
     
     % <obliq, X>
-    sob = sin( obliq );
-    cob = cos( obliq);
-    T21 = [ 1    0    0;  ...
-            0   cob  sob; ...
-            0  -sob  cob];
+    sinOb = sin( obliq );
+    cosOb = cos( obliq);
+    T21   = [ 1     0      0;  ...
+              0   cosOb  sinOb; ...
+              0  -sinOb  cosOb];
     
     % <eLon, X>
-    sol = sin(eLon);
-    col = cos(eLon);
-    T22 = [ col  sol  0; ...
-           -sol  col  0; ...
-             0    0   1];
+    sinLon = sin(eLon);
+    cosLon = cos(eLon);
+    T22    = [ cosLon  sinLon  0; ...
+              -sinLon  cosLon  0; ...
+                  0       0    1];
          
     % Rotation from GEI to GSE
-    T2 = T22*T21;
+    T2 = T22 * T21;
 end

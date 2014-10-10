@@ -64,8 +64,8 @@ function [] = test_Hapgood()
 %-------------------------------------
 % Percent difference                 |
 %-------------------------------------
-    perc_gei = (100.0 - (gei1 ./ gei_hap)) * 100.0;
-    perc_geo = (100.0 - (geo1 ./ geo_hap)) * 100.0;
+    perc_gei = abs(100.0 - gei1 ./ gei_hap * 100.0);
+    perc_geo = abs(100.0 - geo1 ./ geo_hap * 100.0);
     
     
 %-------------------------------------
@@ -77,7 +77,7 @@ function [] = test_Hapgood()
     fprintf('Absolute Difference: %0.4f %0.4f %0.4f\n', diff_gei);
     fprintf('Percent Difference:  %0.4f %0.4f %0.4f\n', perc_gei);
     fprintf('\n');
-    fprintf('GSE to GSO\n');
+    fprintf('GSE to GEO\n');
     fprintf('Absolute Difference: %0.4f %0.4f %0.4f\n', diff_geo);
     fprintf('Percent Difference:  %0.4f %0.4f %0.4f\n', perc_geo);
 end

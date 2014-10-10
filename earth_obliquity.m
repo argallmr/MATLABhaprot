@@ -21,8 +21,8 @@
 %
 % RETURNS
 %   obliquity:      out, required, type=double
-%                   Obliquity of Earth's ecliptic orbit.
+%                   Obliquity of Earth's ecliptic orbit (degrees).
 %--------------------------------------------------------------------------
-function obliquity = obliquity_earth(T0)
+function obliquity = earth_obliquity(T0)
     obliquity = 23.439 - 0.013*T0;
 end
