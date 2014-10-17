@@ -17,15 +17,15 @@
 %       [PHI, LAMBDA] = gse2gsm(G01, G11, H11)
 %           PHI and LAMBDA are the geocentric latitude and longitude of the
 %           dipole North geomagnetic pole (GEO spherical coordinates).
-%           Inputs G01, G11, and H11 are the first order IGRF coefficients,
+%           Inputs G10, G11, and H11 are the first order IGRF coefficients,
 %           adjusted to the time of interest. Angles are returned in
 %           radians.
 %
 %   See Also:
 %       dipole_tilt.m
 %--------------------------------------------------------------------------
-function [phi, lambda] = dipole_axis(g01, g11, h11)
+function [phi, lambda] = dipole_axis(g10, g11, h11)
     % Compute the geocentric longitude and lattitude of the dipole.
     lambda = atan(h11 / g11);
-    phi    = pi/2 - atan( ( g11*cos(lambda) + h11*sin(lambda) ) / g01 );
+    phi    = pi/2 - atan( ( g11*cos(lambda) + h11*sin(lambda) ) / g10 );
 end

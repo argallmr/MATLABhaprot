@@ -45,14 +45,14 @@ function [tilt, psi] = dipole_angle(arg1, arg2, arg3, arg4, arg5)
     % IGRF Coefficients Given %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%
     if nargin == 5
-        g01 = arg1;
+        g10 = arg1;
         g11 = arg2;
         h11 = arg3;
         mjd = arg4;
         UT  = arg5;
 
         % Compute the geocentric longitude and lattitude of the dipole.
-        [phi, lambda] = dipole_axis(g01, g11, h11);
+        [phi, lambda] = dipole_axis(g10, g11, h11);
     end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,6 +93,6 @@ function [tilt, psi] = dipole_angle(arg1, arg2, arg3, arg4, arg5)
     end
     
     % Compute the angles
-    psi = atan(y/z);
+    psi  = atan(y/z);
     tilt = atan( x / sqrt(y^2 + z^2) );
 end

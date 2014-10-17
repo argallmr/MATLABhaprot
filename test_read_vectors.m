@@ -15,10 +15,10 @@
 %       Reads satellite position in GEI coordinates at TIME from FILENAME.
 %
 %   [time, gei, geo, gm, gse, gsm, sm] = read_SPDF_Locator_Form(filename);
-%       Returns position in GEO, GM, GSE, GSM, and SM coordinates.
+%       Returns position in GEO, MAG (GM), GSE, GSM, and SM coordinates.
 %
 %--------------------------------------------------------------------------
-function [time, gei, geo, gm, gse, gsm, sm] = test_read_vectors(filename)
+function [time, gei, geo, mag, gse, gsm, sm] = test_read_vectors(filename)
 
     % Make sure the file exists
     assert(exist(filename, 'file') == 2, ['File does not exist: "', filename, '".']);
@@ -44,7 +44,7 @@ function [time, gei, geo, gm, gse, gsm, sm] = test_read_vectors(filename)
     % Select components
     gei  = [data{4}  data{5}  data{6}];
     geo  = [data{7}  data{8}  data{9}];
-    gm   = [data{10} data{11} data{12}];
+    mag   = [data{10} data{11} data{12}];
     gse  = [data{13} data{14} data{15}];
     gsm  = [data{16} data{17} data{18}];
     sm   = [data{19} data{20} data{21}];

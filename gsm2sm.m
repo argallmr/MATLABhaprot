@@ -64,9 +64,9 @@ function T4 = gsm2sm(arg1, arg2, arg3, arg4, arg5)
     %
     
     % <-mu, Y>
-    sinmu = sin( -mu );
-    cosmu = cos( -mu );
-    T4 = [  cosmu   0  -sinmu  ; ...
+    sinMu = sin( -mu );
+    cosMu = cos( -mu );
+    T4 = [  cosMu   0  -sinMu  ; ...
               0     1     0    ; ...
-            sinmu   0   cosmu ];
+            sinMu   0   cosMu ];
 end

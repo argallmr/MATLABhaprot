@@ -34,10 +34,10 @@ function T5 = geo2mag(arg1, arg2, arg3)
     % Dipole axis.
     switch nargin
         case 3
-            g01 = arg1;
+            g10 = arg1;
             g11 = arg2;
             h11 = arg3;
-            [phi, lambda] = dipole_axis(g01, g11, h11);
+            [phi, lambda] = dipole_axis(g10, g11, h11);
         case 2
             phi    = arg1;
             lambda = arg2;
@@ -56,18 +56,18 @@ function T5 = geo2mag(arg1, arg2, arg3)
     %   - A pure rotation about Y by angle (phi - 90)
     
     % <lambda, Z>
-    sinlam = sin(lambda);
-    coslam = cos(lambda);
-    T51 = [  coslam  sinlam  0;
-            -sinlam  coslam  0;
+    sinLam = sin(lambda);
+    cosLam = cos(lambda);
+    T51 = [  cosLam  sinLam  0;
+            -sinLam  cosLam  0;
                 0       0    1];
     
     % <(phi - 90, Y>
-    sinphi = sin( phi - pi/2 );
-    cosphi = cos( phi - pi/2 );
-    T52 = [ cosphi  0  -sinphi  ; ...
+    sinPhi = sin( phi - pi/2 );
+    cosPhi = cos( phi - pi/2 );
+    T52 = [ cosPhi  0  -sinPhi  ; ...
               0     1     0     ; ...
-            sinphi  0   cosphi ];
+            sinPhi  0   cosPhi ];
        
    % Create the transformation
    T5 = T52 * T51;
