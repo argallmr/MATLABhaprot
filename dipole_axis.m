@@ -1,31 +1,40 @@
 %--------------------------------------------------------------------------
-% NAME
+% Name
 %   dipole_axis
 %
-% PURPOSE
-%   Calculate the position of the dipole in spherical GEO.
+% Purpose
+%   Calculate the position of the dipole in spherical GEO coordinates.
 %
-%   References:
-%       - https://www.spenvis.oma.be/help/background/coortran/coortran.html
-%       - Hapgood, M. A. (1992). Space physics coordinate transformations:
-%           A user guide. Planetary and Space Science, 40(5), 711?717. 
-%           doi:http://dx.doi.org/10.1016/0032-0633(92)90012-D
-%       - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
-%           45(8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633(97)80261-9
+% Calling Sequence:
+%   [lat, lon] = dipole_axis (g01, g11, h11)
+%   Inputs G01, G11, and H11 are the first order IGRF coefficients,
+%   adjusted to the time of interest. Angles are returned in
+%   radians.
+%   lat and lon are the (GEO) geocentric (radians) latitude and longitude
+%   of the dipole north geomagnetic pole. MJD is the Modified Julian Date.
+%   UTC is in decimal hours.
 %
-%   Calling Sequence:
-%       [PHI, LAMBDA] = gse2gsm(G01, G11, H11)
-%           PHI and LAMBDA are the geocentric latitude and longitude of the
-%           dipole North geomagnetic pole (GEO spherical coordinates).
-%           Inputs G10, G11, and H11 are the first order IGRF coefficients,
-%           adjusted to the time of interest. Angles are returned in
-%           radians.
+% See Also:
+%   dipole_tilt_angle.m
 %
-%   See Also:
-%       dipole_tilt.m
+% References:
+% See Hapgood Rotations Glossary.txt.
+% - https://www.spenvis.oma.be/help/background/coortran/coortran.html
+% - Hapgood, M. A. (1992). Space physics coordinate transformations:
+%   A user guide. Planetary and Space Science, 40 (5), 711?717.
+%   doi:http://dx.doi.org/10.1016/0032-0633 (92)90012-D
+% - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
+%   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
+%
+% Last update: 2014-10-14
+% MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
+% Required Products None
 %--------------------------------------------------------------------------
-function [phi, lambda] = dipole_axis(g10, g11, h11)
-    % Compute the geocentric longitude and lattitude of the dipole.
-    lambda = atan(h11 / g11);
-    phi    = pi/2 - atan( ( g11*cos(lambda) + h11*sin(lambda) ) / g10 );
+function [lat, lon] = dipole_axis (g01, g11, h11)
+
+	assert (nargin == 3, 'Missing arguments for dipole_axis ().'); % nargin > 2 ?
+
+	% Compute the geocentric longitude and lattitude of the dipole.
+	lon = atan (h11 / g11);
+	lat = pi / 2.0 - atan ( (g11 * cos (lon) + h11 * sin (lon)) / g01 );
 end
