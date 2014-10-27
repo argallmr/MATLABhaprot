@@ -33,7 +33,7 @@
 %--------------------------------------------------------------------------
 function nJC = nJulCenturies (nDays)
 
-	assert (nargin > 1, 'Missing arguments for nJulCenturies ().');
+	assert (nargin > 0, 'Missing arguments for nJulCenturies ().');
 
 	% There are exactly 36525 days in a Julian Century
 	nJC = nDays / 36525.0;

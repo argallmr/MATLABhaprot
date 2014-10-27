@@ -6,7 +6,7 @@
 %   Calculate the position of the dipole in spherical GEO coordinates.
 %
 % Calling Sequence:
-%   [lat, lon] = dipole_axis (g01, g11, h11)
+%   [lat, lon] = dipole_axis (g10, g11, h11)
 %   Inputs G01, G11, and H11 are the first order IGRF coefficients,
 %   adjusted to the time of interest. Angles are returned in
 %   radians.
@@ -30,11 +30,11 @@
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
 %--------------------------------------------------------------------------
-function [lat, lon] = dipole_axis (g01, g11, h11)
+function [lat, lon] = dipole_axis (g10, g11, h11)
 
 	assert (nargin == 3, 'Missing arguments for dipole_axis ().'); % nargin > 2 ?
 
 	% Compute the geocentric longitude and lattitude of the dipole.
 	lon = atan (h11 / g11);
-	lat = pi / 2.0 - atan ( (g11 * cos (lon) + h11 * sin (lon)) / g01 );
+	lat = pi / 2.0 - atan ( (g11 * cos (lon) + h11 * sin (lon)) / g10 );
 end

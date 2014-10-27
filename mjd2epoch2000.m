@@ -36,7 +36,7 @@
 %--------------------------------------------------------------------------
 function epoch2000 = mjd2epoch2000 (mjd)
 
-	assert (nargin > 1, 'Missing arguments for mjd2epoch2000 ().');
+	assert (nargin > 0, 'Missing arguments for mjd2epoch2000 ().');
 
 	% Time in Julian centuries from Epoch 2000 (2000-01-01T12:00:00Z)
 	%   - mjd        starts 1858-11-17T00:00:00Z

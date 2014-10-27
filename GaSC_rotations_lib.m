@@ -1,4 +1,4 @@
 % GaSC_rotations_lib
 
-rad2deg = 180.0 / pi;
-deg2rad = pi / 180.0;
+RAD2DEG = 180.0 / pi;
+DEG2RAD = pi / 180.0;

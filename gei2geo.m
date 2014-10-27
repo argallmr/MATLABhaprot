@@ -52,7 +52,7 @@ function T1 = gei2geo (mjd, UTC)
 	T0 = nJulCenturies ( mjd2epoch2000 ( fix (mjd)) );
 
 	% Compute the sidereal time
-	theta = GreenwhichMeanSiderealTime (T0, UTC);
+	theta = GreenwichMeanSiderealTime (T0, UTC);
 
 	% The transformation from GEI to GEO, then is
 	%   - T1 = <theta, Z>

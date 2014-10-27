@@ -16,7 +16,7 @@
 %   dipole north geomagnetic pole. MJD is the Modified Julian Date.
 %   UTC is in decimal hours.
 %
-%   [...] = dipole_tilt_angle (g01, g11, h11, MJD, UTC)
+%   [...] = dipole_tilt_angle (g10, g11, h11, MJD, UTC)
 %   First order IGRF coefficients, adjusted to the time of interest.
 %   Distinguished from (x, y, z) by the true flag. MJD is the Modified
 %   Julian Date. UTC is in decimal hours.
@@ -36,7 +36,7 @@
 %--------------------------------------------------------------------------
 function [dipoleAngle2GSMz, GSMzAngle2GSEz] = dipole_tilt_angle (arg1, arg2, arg3, arg4, arg5)
 
-	assert (nargin > 0, 'Missing arguments for dipole_tilt_angle ().');
+	assert (nargin > 2, 'Missing arguments for dipole_tilt_angle ().');
 
 	switch nargin
 		case 3
@@ -60,14 +60,14 @@ function [dipoleAngle2GSMz, GSMzAngle2GSEz] = dipole_tilt_angle (arg1, arg2, arg
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			% IGRF Coefficients Given %
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			g01 = arg1;
+			g10 = arg1;
 			g11 = arg2;
 			h11 = arg3;
 			MJD = arg4;
 			UTC = arg5;
 
 			% Compute the geocentric longitude and lattitude of the dipole.
-			[lat, lon] = dipole_axis (g01, g11, h11);
+			[lat, lon] = dipole_axis (g10, g11, h11);
 	end % switch
 
 	% Geocentric Longitude and Latitude, continued
@@ -89,9 +89,11 @@ function [dipoleAngle2GSMz, GSMzAngle2GSEz] = dipole_tilt_angle (arg1, arg2, arg
 		z  = Qe (3);
 	end
 
-	% Compute the angles - handle matrices - quadrant-safe because Lat & Lon are constrained
+	% Compute the angles
+  %   - handle matrices
+  %   - quadrant-safe because Lat & Lon are constrained
 	dipoleAngle2GSMz = atan ( x ./ sqrt (y.^2 + z.^2) );
-	GSMzAngle2GSEz   = atan (y ./ z);
+	GSMzAngle2GSEz   = atan ( y ./ z);
 end
 
 % Test cases and results
