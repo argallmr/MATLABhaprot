@@ -3,22 +3,20 @@
 %   date2julday
 %
 % Purpose
-%   Julian day number 0 assigned to the day starting at noon on
+%   Julian Day number 0 assigned to the day starting at noon on
 %   January 1, 4713 BC, proleptic Julian calendar (November 24, 4714 BC,
 %   in the proleptic Gregorian calendar). See Hapgood Rotations Glossary.txt.
 %
 % Calling Sequence:
 %   julday = date2julday (DateNumber)
-%   Convert MATLAB date number to julian days.
+%   Convert MATLAB date number to Julian Days.
 %
-%   julday = date2julday (DateString)
-%   Convert a date string to julian days. See MATLAB help for datevec.
-%
-%   julday = date2julday (Date, format)
-%   Convert date strings to julian days. FORMAT specifies how the
+%   Require a format for strings, because of the performace hit if you don't.
+%   julday = date2julday ({DateString, format})
+%   Convert date strings to Julian Days. FORMAT specifies how the
 %   strings are formatted. See MATLAB help for datevec.
 %
-%   julday = date2julday (__, 'MJD', {true | false})
+%   julday = date2julday (__, 'MJD')
 %   Return the modified Julian Day instead of the Julian Day.
 %
 % Examples:
@@ -28,7 +26,8 @@
 %   >> date2julday (datenum (2014, 10, 08, 14, 13, 0))
 %   2456939.092361                                       2456939.092361
 %
-%   >> date2julday ('2014-10-08T14:13:00', 'yyyy-mm-ddTHH:MM:SS'))
+%   Note that MATLAB 2014 datevec does not accept ISO date-time format.
+%   >> date2julday ('2014-10-08 14:13:00', 'yyyy-mm-dd HH:MM:SS')
 %   2456939.092361                                       2456939.092361
 %
 % References:
@@ -37,32 +36,25 @@
 %   http://articles.adsabs.harvard.edu/full/1983IAPPP..13...16F
 %   http://aa.usno.navy.mil/data/docs/JulianDate.php
 %--------------------------------------------------------------------------
-function julday = date2julday (Date, varargin)
+function julday = date2julianDay (Date, varargin)
 
-  % Default
+  % Defaults
   mjd = false;
-  fmt = '';
+  fmt = false;
 
-  % Optional Inputs
-  if nargin >= 2
-    % Date string?
-    %   - Format is the only non-[name, value] option.
-    if mod (length (varargin), 2) ~= 0
-      fmt = varargin {1};
-    end
+	nVarArgs = length (varargin);
 
-    % Modified Julian Date?
-    iMJD = find (strcmp (varargin, 'MJD') == 1);
-    if ~isempty (iMJD)
-      mjd = logical (varargin {iMJD + 1});
-    end
+  % Optional arguments
+  if nVarArgs > 0 % format | {format, MJD} | MJD
+    mjd = strcmp (varargin (nVarArgs), 'MJD'); % might be MJD | format
+		fmt = (~mjd | (nVarArgs == 2)); % Date string exists
   end
 
-  % DateNum or Date string?
-  if isempty (fmt)
-    [year, month, day, hour, minute, second] = datevec (Date);
+  % DateNum or Date string? datevec returns doubles
+  if fmt
+    [year, month, day, hour, minute, second] = datevec (Date, varargin {1});
   else
-    [year, month, day, hour, minute, second] = datevec (Date, fmt);
+    [year, month, day, hour, minute, second] = datevec (Date);
   end
 
   %
@@ -75,7 +67,7 @@ function julday = date2julday (Date, varargin)
   %   m = 10 -- January
   %   m = 11 -- February
   %   m =  0 -- March
-  m = month + 12*a - 3;
+  m = month + (12 * a) - 3;
 
   % Offset the year so that we begin counting on 1 March -4800 (4801 BC).
   %   - Subtract a year for Jan and Feb
@@ -86,30 +78,30 @@ function julday = date2julday (Date, varargin)
   %   2 BC = -1
   %   3 BC = -2
   %   etc.
-  y = year + 4800 - a;
+  y = (year + 4800.0) - a;
 
   % Julian Day Number
-  %   1.   Number of days in current month
-  %   2.   Number of days in previous months
-  %       Mar?Jul:  31 30 31 30 31
-  %       Aug?Dec:  31 30 31 30 31
-  %       Jan?Feb:  31 28
-  %   3.   Number of days in previous years
+  %     1. Number of days in current month
+  %     2. Number of days in previous months
+  %        Mar-Jul:  31 30 31 30 31
+  %        Aug-Dec:  31 30 31 30 31
+  %        Jan-Feb:  31 28
+  %     3. Number of days in previous years
   %   4-6. Number of leap days since 4800
-  %       - Every year that is divisible by 4
-  %       - Except years that are divisible by 100 but not by 400.
-  %   7.   Ensure JND=0 for January 1, 4713 BC.
-  JDN = day                              + ...
-        floor ( (153.0 * m + 2.0) / 5.0) + ...
-        365.0 * y                        + ...
-        floor (y /   4.0)                - ...
-        floor (y / 100.0)                + ...
-        floor (y / 400.0)                - ...
+  %        - Every year that is divisible by 4
+  %        - Except years that are divisible by 100 but not by 400.
+  %     7. Ensure JND=0 for January 1, 4713 BC.
+  JDN = day                                + ...
+        floor ( ((m * 153.0) + 2.0) / 5.0) + ...
+        y * 365.0                          + ...
+        floor (y / 4.0)                    - ...
+        floor (y / 100.0)                  + ...
+        floor (y / 400.0)                  - ...
         32045.0;
 
   % Add the fractional part of the day
-  %   - Julian day begins at noon.
-  julday = JDN + (hour - 12.0) / 24.0 + minute / 1440.0 + second / 86400.0;
+  %   - Julian Day begins at noon.
+  julday = JDN + ((hour - 12.0) / 24.0) + (minute / 1440.0) + (second / 86400.0);
 
   % Modified Julian Day?
   %   - Days since 17 Nov 1858 00:00 UT
