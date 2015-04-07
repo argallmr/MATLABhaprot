@@ -39,14 +39,17 @@
 % - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
 %   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
 %
-% Last update: 2014-10-14
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
+%
+% History:
+%   2014-10-14    Written by Matthew Argall
+%   2015-04-07    Vectorized by changing "*" to ".*". - MRA
 %--------------------------------------------------------------------------
 function eLon = sun_ecliptic_longitude (T0, UTC)
 
 	assert (nargin > 1, 'Missing arguments for sun_ecliptic_longitude ().');
-	GaSC_rotations_lib
+	DEG2RAD = pi / 360.0;
 
 	% Sun's Mean anomoly
 	ma = sun_mean_anomoly (T0, UTC);
@@ -57,7 +60,7 @@ function eLon = sun_ecliptic_longitude (T0, UTC)
 	% Ecliptic Longitude
 	%   - Force to the range [0, 360)
 	eLon = mod ( mLon + ...     % Degrees
-               (1.915 - 0.0048 * T0) * sin (ma * DEG2RAD) + ...
-               0.020 * sin (2 * ma * DEG2RAD), ...
+               (1.915 - 0.0048 .* T0) .* sin(ma .* DEG2RAD) + ...
+               0.020 * sin (2 .* ma .* DEG2RAD), ...
              360 );
 end

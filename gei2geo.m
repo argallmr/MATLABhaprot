@@ -35,33 +35,43 @@
 % - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
 %   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
 %
-% Last update: 2014-10-14
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
+%
+% History:
+%   2014-10-14    Written by Matthew Argall
+%   2015-04-07    Vectorized to accept array inputs. - MRA
 %--------------------------------------------------------------------------
 function T1 = gei2geo (mjd, UTC)
 
 	assert (nargin > 1, 'Missing arguments for gei2geo ().');
 
 	% Convert a date to Modified Julian Date?
-	if ischar (mjd) || iscell (mjd)
-		mjd = date2mjd (mjd);
+	if ischar(mjd) || iscell(mjd)
+		mjd = date2mjd(mjd);
 	end
 
 	% Number of julian centuries since Epoch 2000
-	T0 = nJulCenturies ( mjd2epoch2000 ( fix (mjd)) );
+	T0 = nJulCenturies( mjd2epoch2000( fix (mjd)) );
 
 	% Compute the sidereal time
-	theta = GreenwichMeanSiderealTime (T0, UTC);
+	theta = GreenwichMeanSiderealTime(T0, UTC);
 
 	% The transformation from GEI to GEO, then is
 	%   - T1 = <theta, Z>
 	%   - A CW pure rotation about Z by angle theta
 
 	% <obliq, X>
-	sinTheta = sin (theta);
-	cosTheta = cos (theta);
-	T1 = [ cosTheta  sinTheta  0; ...
-        -sinTheta  cosTheta  0; ...
-            0         0      1];
+	sinTheta = sin(theta);
+	cosTheta = cos(theta);
+	
+	%      |  cos  sin  0 |
+	% T1 = | -sin  cos  0 |
+	%      |   0    0   1 |
+	T1        =  zeros(3, 3, length(mjd));
+	T1(1,1,:) =  cosTheta;
+	T1(1,2,:) =  sinTheta;
+	T1(2,1,:) = -sinTheta;
+	T1(2,2,:) =  cosTheta;
+	T1(3,3,:) =  1;
 end

@@ -36,7 +36,7 @@
 %--------------------------------------------------------------------------
 function [dipoleAngle2GSMz, GSMzAngle2GSEz] = dipole_tilt_angle (arg1, arg2, arg3, arg4, arg5)
 
-	assert (nargin > 2, 'Missing arguments for dipole_tilt_angle ().');
+	assert(nargin > 2, 'Missing arguments for dipole_tilt_angle ().');
 
 	switch nargin
 		case 3
@@ -67,33 +67,34 @@ function [dipoleAngle2GSMz, GSMzAngle2GSEz] = dipole_tilt_angle (arg1, arg2, arg
 			UTC = arg5;
 
 			% Compute the geocentric longitude and lattitude of the dipole.
-			[lat, lon] = dipole_axis (g10, g11, h11);
+			[lat, lon] = dipole_axis(g10, g11, h11);
 	end % switch
 
 	% Geocentric Longitude and Latitude, continued
 	if nargin >= 4
 		% Unit vector of the dipole axis in GEO
-		Qg = [ cos(lat)*cos(lon);
-					 cos(lat)*sin(lon);
-					 sin(lat)             ];
+		Qg      = zeros(3, length(lat));
+		Qg(1,:) = cos(lat) .* cos(lon);
+		Qg(2,:) = cos(lat) .* sin(lon);
+		Qg(3,:) = sin(lat);
 
 		% Rotations to bring GEO to GSE
-		T1 = gei2geo (MJD, UTC);
-		T2 = gei2gse (MJD, UTC);
-		geo2gse = T2 * T1'; % to prepare for handling matrices, rather than a single vector
+		T1      = gei2geo (MJD, UTC);
+		T2      = gei2gse (MJD, UTC);
+		geo2gse = mrmultiply_matrices(T2, permute(T1, [2,1,3]));
 
 		% Rotate the dipole axis to GSE
-		Qe = geo2gse * Qg;
-		x  = Qe (1);
-		y  = Qe (2);
-		z  = Qe (3);
+		Qe = mrvector_rotate( geo2gse, Qg );
+		x  = Qe (1,:);
+		y  = Qe (2,:);
+		z  = Qe (3,:);
 	end
 
 	% Compute the angles
   %   - handle matrices
   %   - quadrant-safe because Lat & Lon are constrained
-	dipoleAngle2GSMz = atan ( x ./ sqrt (y.^2 + z.^2) );
-	GSMzAngle2GSEz   = atan ( y ./ z);
+	dipoleAngle2GSMz = atan( x ./ sqrt (y.^2 + z.^2) );
+	GSMzAngle2GSEz   = atan( y ./ z);
 end
 
 % Test cases and results

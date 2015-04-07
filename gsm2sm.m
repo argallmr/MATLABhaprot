@@ -37,9 +37,12 @@
 % - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
 %   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
 %
-% Last update: 2014-10-14
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
+%
+% History:
+%   2014-10-14    Written by Matthew Argal;
+%   2015-04-07    Vectorized to accept arrays of intputs. - MRA
 %--------------------------------------------------------------------------
 function T4 = gsm2sm (arg1, arg2, arg3, arg4, arg5)
 
@@ -50,11 +53,11 @@ function T4 = gsm2sm (arg1, arg2, arg3, arg4, arg5)
 		case 1
 			mu = arg1;
 		case 3
-			mu = dipole_tilt_angle (arg1, arg2, arg3);
+			mu = dipole_tilt_angle(arg1, arg2, arg3);
 		case 4
-			mu = dipole_tilt_angle (arg1, arg2, arg3, arg4);
+			mu = dipole_tilt_angle(arg1, arg2, arg3, arg4);
 		case 5
-			mu = dipole_tilt_angle (arg1, arg2, arg3, arg4, arg5);
+			mu = dipole_tilt_angle(arg1, arg2, arg3, arg4, arg5);
 	end
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +72,14 @@ function T4 = gsm2sm (arg1, arg2, arg3, arg4, arg5)
 	% <-mu, Y>
 	sinMu = sin ( -mu );
 	cosMu = cos ( -mu );
-	T4 = [  cosMu  0  sinMu  ; ...
-						0    1    0    ; ...
-				 -sinMu  0  cosMu ];
+	
+	%      |  cos  0  sin |
+	% T4 = |   0   1   0  |
+	%      | -sin  0  cos |
+	T4        =  zeros(3, 3, length(mu));
+	T4(1,1,:) =  cosMu;
+	T4(3,1,:) = -sinMu;
+	T4(2,2,:) =  1;
+	T4(1,3,:) =  sinMu;
+	T4(3,3,:) =  cosMu;
 end

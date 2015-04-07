@@ -30,22 +30,13 @@ function [] = test_Hapgood()
     % Read data from file
     [time, gei, geo, mag, gse, gsm, sm] = test_read_vectors(test_file);
     
-    % Start with a single vector
-    t1   = time(1,:)';
-    gei1 = gei(1,:)';
-    geo1 = geo(1,:)';
-    mag1 = mag(1,:)';
-    gse1 = gse(1,:)';
-    gsm1 = gsm(1,:)';
-    sm1  = sm(1,:)';
-    
 %-------------------------------------
 % Get Required Parameters            |
 %-------------------------------------
     
     % Get Modified Julian Date and UT
     %   - Number of days since 17 Nov 1858
-    mjd = date2julday(t1, 'MJD', true);
+    mjd = date2julday(time, 'MJD', true);
     ut  = mod(mjd, 1) * 24.0;
     mjd = floor(mjd);
     
@@ -78,29 +69,43 @@ function [] = test_Hapgood()
 %-------------------------------------
 % Transform from GSE to *            |
 %-------------------------------------
-    gei_hap =           T2' * gse1;
-    geo_hap =      T1 * T2' * gse1;
-    gsm_hap =           T3' * gse1;
-    sm_hap  =      T4 * T3  * gse1;
-    mag_hap = T5 * T1 * T2' * gse1;
+		% GSE2GEI
+		%   gei = T2' * gse
+    gei_hap = mrvector_rotate( permute(T2, [2,1,3]), gse);
+		
+		% GSE2GEO
+		%   geo = T1 * T2' * gse
+    geo_hap = mrvector_rotate( T1, mrvector_rotate( permute(T2, [2,1,3]), gse) );
+		
+		% GSE2GSM
+		%   gsm = T3' * gse
+    gsm_hap = mrvector_rotate( permute(T3, [2,1,3]), gse);
+		
+		% GSE2SM
+		%   sm = T4 * T3 * gse
+    sm_hap  = mrvector_rotate( T4, mrvector_rotate(T3, gse) );
+		
+		% GSE2MAG
+		%   mag = T5 * T1 * T2' * gse
+    mag_hap = mrvector_rotate( T5, mrvector_rotate( T1, mrvector_rotate( permute(T2, [2,1,3]), gse ) ) );
     
 %-------------------------------------
 % Absolute difference                |
 %-------------------------------------
-    diff_gei = abs(gei_hap - gei1);
-    diff_geo = abs(geo_hap - geo1);
-    diff_gsm = abs(gsm_hap - gsm1);
-    diff_sm  = abs(sm_hap  - sm1);
-    diff_mag = abs(mag_hap - mag1);
+    diff_gei = mean( abs(gei_hap - gei) );
+    diff_geo = mean( abs(geo_hap - geo) );
+    diff_gsm = mean( abs(gsm_hap - gsm) );
+    diff_sm  = mean( abs(sm_hap  - sm)  );
+    diff_mag = mean( abs(mag_hap - mag) );
     
 %-------------------------------------
 % Percent difference                 |
 %-------------------------------------
-    perc_gei = abs(100.0 - gei1 ./ gei_hap * 100.0);
-    perc_geo = abs(100.0 - geo1 ./ geo_hap * 100.0);
-    perc_gsm = abs(100.0 - gsm1 ./ gsm_hap * 100.0);
-    perc_sm  = abs(100.0 - sm1  ./ sm_hap  * 100.0);
-    perc_mag = abs(100.0 - mag1 ./ mag_hap * 100.0);
+    perc_gei = mean( abs(100.0 - gei ./ gei_hap .* 100.0) );
+    perc_geo = mean( abs(100.0 - geo ./ geo_hap .* 100.0) );
+    perc_gsm = mean( abs(100.0 - gsm ./ gsm_hap .* 100.0) );
+    perc_sm  = mean( abs(100.0 - sm  ./ sm_hap  .* 100.0) );
+    perc_mag = mean( abs(100.0 - mag ./ mag_hap .* 100.0) );
     
 %-------------------------------------
 % Output Answers                     |

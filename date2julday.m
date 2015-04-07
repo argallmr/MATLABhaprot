@@ -3,58 +3,97 @@
 %   date2julday
 %
 % Purpose
-%   Julian Day number 0 assigned to the day starting at noon on
+%   Convert MATLAB date numbers or date strings to Julian Days.
+%
+%   Julian Day number of 0 is assigned to the day starting at noon on
 %   January 1, 4713 BC, proleptic Julian calendar (November 24, 4714 BC,
 %   in the proleptic Gregorian calendar). See Hapgood Rotations Glossary.txt.
 %
 % Calling Sequence:
-%   julday = date2julday (DateNumber)
-%   Convert MATLAB date number to Julian Days.
+%   JULDAY = date2julday (DATENUMBER)
+%     Convert MATLAB date number to Julian Days.
 %
-%   Require a format for strings, because of the performace hit if you don't.
-%   julday = date2julday ({DateString, format})
-%   Convert date strings to Julian Days. FORMAT specifies how the
-%   strings are formatted. See MATLAB help for datevec.
+%   JULDAY = date2julday (DATESTRING)
+%     Convert date strings or cell array of date strings to Julian Days. A
+%     format of 'yyyy-mm-ddTHH:MM:SS' is assumed.
 %
-%   julday = date2julday (__, 'MJD')
-%   Return the modified Julian Day instead of the Julian Day.
+%   JULDAY = date2julday (__, 'ParamName', ParamValue)
+%     Any parameter name-value pair given below can be appended to any of
+%     the previous calling methods.
+%
+% Parameters
+%   DATE:         in, required, type=datevec or datestring
+%   'Format':     in, optional, type=string, default='yyyy-mm-dd HH:MM:SS'
+%   'MJD':        in, optional, type=boolean, default=false
+%
+% Returns
+%   JULDAY        out, required, type=double
 %
 % Examples:
-%   >> date2julday (datenum (2000, 01, 01, 12, 0, 0))    ACCEPTED
-%   2451545.0                                            2451545.0
+%   Convert a MATLAB date number to julian day.
+%     >> date2julday (datenum (2000, 01, 01, 12, 0, 0))    ACCEPTED
+%       2451545.0                                          2451545.0
 %
-%   >> date2julday (datenum (2014, 10, 08, 14, 13, 0))
-%   2456939.092361                                       2456939.092361
+%   Convert a MATLAB date number to modified julian day.
+%     >> date2julday (datenum (2000, 01, 01, 12, 0, 0), 'MJD', true)
+%       51544.5                                            51544.5
 %
-%   Note that MATLAB 2014 datevec does not accept ISO date-time format.
-%   >> date2julday ('2014-10-08 14:13:00', 'yyyy-mm-dd HH:MM:SS')
-%   2456939.092361                                       2456939.092361
+%   Convert an array of MATLAB date numbers to julian day.
+%     >> datvec = repmat( [2014, 10, 08, 14, 13, 0], 2, 1);
+%     >> datnum = datenum( datvec );
+%     >> julday = date2julday( datnum );
+%       2456939.092361                                     2456939.092361
+%       2456939.092361
+%
+%   Convert a cell array of date strings to julian days.
+%     >> dateStr = {'2014-10-08 14:13:00', '2014-10-08 14:13:00'}
+%     >> julday  = date2julday( dateStr, 'yyyy-mm-dd HH:MM:SS')
+%       2456939.092361                                     2456939.092361
+%       2456939.092361
 %
 % References:
 %   http://en.wikipedia.org/wiki/Julian_day
 %   http://www.cs.utsa.edu/~cs1063/projects/Spring2011/Project1/jdn-explanation.html
 %   http://articles.adsabs.harvard.edu/full/1983IAPPP..13...16F
 %   http://aa.usno.navy.mil/data/docs/JulianDate.php
+%
+% MATLAB release(s) MATLAB 7.14.0.739 (R2012a)
+% Required Products None
+%
+% History:
+%   2014-10-08      Written by Matthew Argall
+%   2015-04-07      'Format' has a parameter name associated with it.
+%                     Created default value for date strings. - MRA
 %--------------------------------------------------------------------------
-function julday = date2julianDay (Date, varargin)
+function julday = date2julday (date, varargin)
 
   % Defaults
   mjd = false;
-  fmt = false;
+  fmt = '';
 
-	nVarArgs = length (varargin);
+	% Look through the optional arguments
+	nOptArgs = length (varargin);
+	for ii = 1 : 2 : nOptArgs
+		switch varargin{ii}
+			case 'MJD'
+				mjd = varargin{ii+1};
+			case 'Format'
+				fmt = varargin{ii+1};
+			otherwise
+				error( ['Optional parameter not recognized: "' varargin{ii} '".'] )
+		end
+	end
 
-  % Optional arguments
-  if nVarArgs > 0 % format | {format, MJD} | MJD
-    mjd = strcmp (varargin (nVarArgs), 'MJD'); % might be MJD | format
-		fmt = (~mjd | (nVarArgs == 2)); % Date string exists
-  end
-
-  % DateNum or Date string? datevec returns doubles
-  if fmt
-    [year, month, day, hour, minute, second] = datevec (Date, varargin {1});
+	% Default format
+	if isempty(fmt) && (ischar(date) || iscell(date))
+		fmt = 'yyyy-mm-dd HH:MM:SS';
+	end
+	
+	% DateNum or Date string? datevec returns doubles
+  if isempty(fmt)
+    [year, month, day, hour, minute, second] = datevec(date);
   else
-    [year, month, day, hour, minute, second] = datevec (Date);
+    [year, month, day, hour, minute, second] = datevec(date, fmt);
   end
 
   %

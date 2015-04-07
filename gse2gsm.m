@@ -47,11 +47,11 @@ function T3 = gse2gsm (arg1, arg2, arg3, arg4, arg5)
 	% Compute the projection angle of the dipole axis.
 	switch nargin
 		case 5
-			[~, psi] = dipole_tilt_angle (arg1, arg2, arg3, arg4, arg5);
+			[~, psi] = dipole_tilt_angle(arg1, arg2, arg3, arg4, arg5);
 		case 4
-			[~, psi] = dipole_tilt_angle (arg1, arg2, arg3, arg4);
+			[~, psi] = dipole_tilt_angle(arg1, arg2, arg3, arg4);
 		case 3
-			[~, psi] = dipole_tilt_angle (arg1, arg2, arg3);
+			[~, psi] = dipole_tilt_angle(arg1, arg2, arg3);
 		case 1
 			psi = arg1;
 	end
@@ -68,7 +68,14 @@ function T3 = gse2gsm (arg1, arg2, arg3, arg4, arg5)
 	% <psi, X>
 	sinPsi = sin ( -psi );
 	cosPsi = cos ( -psi );
-	T3 = [ 1     0       0     ; ...
-				 0   cosPsi  sinPsi  ; ...
-				 0  -sinPsi  cosPsi ];
+	
+	%       | 1   0    0  |
+	% T21 = | 0  cos  sin |
+	%       | 0 -sin  cos |
+	T3        =  zeros(3, 3, length(psi));
+	T3(1,1,:) =  1;
+	T3(2,2,:) =  cosPsi;
+	T3(2,3,:) =  sinPsi;
+	T3(3,2,:) = -sinPsi;
+	T3(3,3,:) =  cosPsi;
 end
