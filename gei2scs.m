@@ -1,4 +1,4 @@
-%--------------------------------------------------------------------------
+%
 % Name
 %   gei2scs
 %
@@ -10,7 +10,7 @@
 % Inputs
 %   YEAR:    in, required, type = double
 %   MONTH:   in, required, type = double
-%   DAY:     in, required, type = string
+%   DAY:     in, required, type = double
 %   SECS:    in, required, type = double
 %            Seconds into `DAY`.
 %   RA:      in, required, type = double
@@ -22,22 +22,22 @@
 %   SCS2GSE: out, optional, type = float
 %            Transformation matrix to rotate SCS to GSE.
 %
-% USES
-%   Uses the following external programs: sunrad.m
-%
 % References:
-% See Hapgood Rotations Glossary.txt.
-% - https://www.spenvis.oma.be/help/background/coortran/coortran.html
-% - Hapgood, M. A. (1992). Space physics coordinate transformations:
-%   A user guide. Planetary and Space Science, 40 (5), 711?717.
-%   doi:http://dx.doi.org/10.1016/0032-0633 (92)90012-D
-% - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
-%   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
+%   See Hapgood Rotations Glossary.txt.
+%   - https://www.spenvis.oma.be/help/background/coortran/coortran.html
+%   - Hapgood, M. A. (1992). Space physics coordinate transformations:
+%     A user guide. Planetary and Space Science, 40 (5), 711?717.
+%     doi:http://dx.doi.org/10.1016/0032-0633 (92)90012-D
+%   - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
+%     45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
 %
-% Last update: 2014-10-14
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
-%--------------------------------------------------------------------------
+%
+% History:
+%   2014-10-14    Written by Matthew Argall
+%   2015-04-08    Vectorized to accept arrays as inputs. - MRA
+%
 function GEI2SCS = gei2scs (year, month, day, secs, RA, dec)
 
 	assert (nargin > 5, 'Missing arguments for gei2scs ().');
