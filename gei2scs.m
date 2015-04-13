@@ -40,20 +40,19 @@
 %
 function GEI2SCS = gei2scs (year, month, day, secs, RA, dec)
 
-	assert (nargin > 5, 'Missing arguments for gei2scs ().');
-	GaSC_rotations_lib
-  
+	assert(nargin > 5, 'Missing arguments for gei2scs ().');
+
 	% Fractional number of days since the beginning of the year of interest.
-	iday = datenum (year, month, day) - datenum (year, 1, 1) + 1;
+	iday = datenum(year, month, day) - datenum(year, 1, 1) + 1;
 
 	% Location of the sun
-	SUN = sun_position (year, iday, secs);  % in what coords? normalized?
+	SUN = sun_position(year, iday, secs);  % in what coords? normalized?
 
 	% RA and DEC form a spherical coordinate system.
 	% - RA  = number of hours past the vernal equinox (location on the
 	%         celestial equator of sunrise on the first day of spring).
 	% - DEC = degrees above or below the equator
-	cosDec = cosd (dec);
+	cosDec = cosd(dec);
 
 	% [x y z] components of the unit vector pointing in the direction of
 	% the spin axis.
@@ -61,18 +60,22 @@ function GEI2SCS = gei2scs (year, month, day, secs, RA, dec)
 	% - RA and dec are the spherical coordinates of that location,
 	%   with the center of the earth as the origin.
 	% - Transforming GEI to SCS transforms [0 0 1] to [x y z] = OMEGA
-  % - Already normalized: spherical to cartesian with r = 1.
-	gei2scs3u  = [cosd(RA)*cosDec  sind(RA)*cosDec  sind(dec)];
+	% - Already normalized: spherical to cartesian with r = 1.
+	scsz  = [ cosd(RA) .* cosDec; ...
+	          sind(RA) .* cosDec; ...
+	          sind(dec)];
 
 	% Form the X- and Y-vectors
 	% - X must point in the direction of the sun.
 	% - To ensure this, Y' = Z' x Sun
 	% - X' = Y' x Z'
-	gei2scs2  = cross (gei2scs3u, SUN);
-	gei2scs2u = gei2scs2 / norm (gei2scs2, 2);
-	gei2scs1  = cross (gei2scs2u, gei2scs3u);     % Should be normalized already
-	gei2scs1u = gei2scs1 / norm (gei2scs1, 2);    % (cross product of 2 perp vectors)
+	scsy = mrvector_cross(scsz, SUN);
+	scsy = mrvector_normalize(scsy);
+	scsx = mrvector_cross(scsy, scsz);
 
 	% Transformation from GEI to SCS.
-	GEI2SCS = [ gei2scs1u; gei2scs2u; gei2scs3u];
+	GEI2SCS        = zeros(3, 3, length(RA));
+	GEI2SCS(:,1,:) = scsx;
+	GEI2SCS(:,2,:) = scsy;
+	GEI2SCS(:,3,:) = scsz;
 end

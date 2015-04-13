@@ -42,14 +42,17 @@
 %--------------------------------------------------------------------------
 function rot_gse2scs = gse2scs (year, month, day, secs, RA, dec)
 
+
 	assert (nargin > 5, 'Missing arguments for gse2scs ().');
 
 
-		% My interpretation of how the program should work, based on file names.
+
+
+% My interpretation of how the program should work, based on file names.
 %     rot_gei2scs = gei2scs (year, month, day, secs, RA, dec);
 %     rot_gei2gse = gei2gse (date2mjd (year, month, day), secs/3600));
 %     rot_gse2scs = rot_gei2scs * rot_gse2gei;
 
-		rot_gse2scs =  gei2scs (year, month, day, secs, RA, dec) * ...
-									(gei2gse (date2mjd (year, month, day), secs/3600))';
+	rot_gse2scs =  gei2scs (year, month, day, secs, RA, dec) * ...
+	               (gei2gse (date2mjd (year, month, day), secs/3600))';
 end

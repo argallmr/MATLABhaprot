@@ -35,22 +35,22 @@
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
 %--------------------------------------------------------------------------
-function mjd = date2mjd (year, month, day)
+function mjd = date2mjd(year, month, day)
 
-	assert (nargin > 0, 'Missing arguments for date2mjd ().');
+	assert(nargin > 0, 'Missing arguments for date2mjd().');
 
 	% If only 1 argument passed, expect it to be an ISO date yyyy-mm-dd of some sort.
 	if nargin == 1
-		mjd = datenum (year, 'yyyy-mm-dd') - 678942.0;
+		mjd = datenum(year, 'yyyy-mm-dd') - 678942.0;
 	else
 		% Adjust date using MATLAB datenum base, January 0, 0000
 		% datenum (1858, 11, 17) = 678942.0
-		mjd = datenum (year, month, day) - 678942.0;
+		mjd = datenum(year, month, day) - 678942.0;
 	end
 end
 
 % Related code snippits
-% [year, month, day, hour, minute, second] = datevec (MJD + 678942.0)
+% [year, month, day, hour, minute, second] = datevec(MJD + 678942.0)
 
 % Test cases and results (To use this table, add the day-of-month to the tabulated entry. Ex: (2009, 01, 01) = 54832).
 %         2000  2001  2002  2003  2004  2005  2006  2007  2008  2009
