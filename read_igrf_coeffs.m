@@ -34,7 +34,7 @@ function [coef, yr, n, m, gh] = read_igrf_coeffs(filename, year)
                       'HeaderLines',          4, ...
                       'MultipleDelimsAsOne',  1);
     fclose(fileID);
-    
+
     % Convert year, doy, hours, and minutes to MatLab datenum
     yr   = [1900:5:2010 2010.5];
     gh   = data{1}';

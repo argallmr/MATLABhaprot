@@ -72,7 +72,7 @@ function T4 = gsm2sm (arg1, arg2, arg3, arg4, arg5)
 	% <-mu, Y>
 	sinMu = sin ( -mu );
 	cosMu = cos ( -mu );
-	
+
 	%      |  cos  0  sin |
 	% T4 = |   0   1   0  |
 	%      | -sin  0  cos |

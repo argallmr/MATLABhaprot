@@ -1,9 +1,9 @@
 %--------------------------------------------------------------------------
 % Name
-%   sun_mean_anomoly
+%   sun_mean_anomaly
 %
 % Purpose
-%   Compute the sun's mean anomoly.
+%   Compute the sun's mean anomaly.
 %
 %   Note:
 %   Strictly speaking, TDT (Terrestrial Dynamical Time) should be used
@@ -11,8 +11,8 @@
 %   difference of about 0.0007° in lambdaSun.
 %
 %   Calling Sequence:
-%   ma = sun_mean_anomoly (T0, UTC)
-%   Compute the sun's mean anomoly (degrees) given the number
+%   ma = sun_mean_anomaly (T0, UTC)
+%   Compute the sun's mean anomaly (degrees) given the number
 %   of Julian centuries (T0) from 2000-01-01T12:00:00Z until
 %   00:00 UTC on the day of interest, and Universal Time (UTC) in
 %   decimal hours.
@@ -42,11 +42,11 @@
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
 %--------------------------------------------------------------------------
-function ma = sun_mean_anomoly (T0, UTC)
+function ma = sun_mean_anomaly (T0, UTC)
 
-	assert (nargin > 1, 'Missing arguments for sun_mean_anomoly ().');
+	assert (nargin > 1, 'Missing arguments for sun_mean_anomaly ().');
 
-	% Sun's Mean anomoly
+	% Sun's Mean anomaly
 	%   - Force to the range [0, 360)
 	ma = mod (357.528 + 35999.050 * T0 + 0.04107 * UTC, 360.0);
 end

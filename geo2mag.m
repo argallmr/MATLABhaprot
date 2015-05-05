@@ -66,7 +66,7 @@ function T5 = geo2mag (arg1, arg2, arg3)
 	% <lon, Z>
 	sinLon = sin (lon);  %sind?
 	cosLon = cos (lon);
-	
+
 	%      |  cos  sin  0 |
 	% T1 = | -sin  cos  0 |
 	%      |   0    0   1 |
@@ -80,7 +80,7 @@ function T5 = geo2mag (arg1, arg2, arg3)
 	% < (lat - 90, Y>
 	sinLat = sin ( lat - pi/2 );
 	cosLat = cos ( lat - pi/2 );
-	
+
 	%      |  cos  0  sin |
 	% T4 = |   0   1   0  |
 	%      | -sin  0  cos |

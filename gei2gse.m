@@ -34,10 +34,10 @@
 function T2 = gei2gse (mjd, UTC)
 
 	assert (nargin > 1, 'Missing arguments for gei2gse ().');
-	
+
 	% Conversion to radians
 	deg2rad = pi / 360.0;
-	
+
 	% Number of points given
 	nPts = length(mjd);
 
@@ -58,7 +58,7 @@ function T2 = gei2gse (mjd, UTC)
 	% <obliq, X>
 	sinObliq = sin( obliq );
 	cosObliq = cos( obliq);
-	
+
 	%       | 1   0    0  |
 	% T21 = | 0  cos  sin |
 	%       | 0 -sin  cos |

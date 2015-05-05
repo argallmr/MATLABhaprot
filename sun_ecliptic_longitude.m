@@ -28,7 +28,7 @@
 %
 % Returns
 %   ELON: out, required, type = double
-%         Mean anomoly of the sun, in degrees
+%         Mean anomaly of the sun, in degrees
 %
 % References:
 % See Hapgood Rotations Glossary.txt.
@@ -51,16 +51,17 @@ function eLon = sun_ecliptic_longitude (T0, UTC)
 	assert (nargin > 1, 'Missing arguments for sun_ecliptic_longitude ().');
 	DEG2RAD = pi / 360.0;
 
-	% Sun's Mean anomoly
-	ma = sun_mean_anomoly (T0, UTC);
+	% Sun's Mean anomaly
+	ma = sun_mean_anomaly (T0, UTC);
 
 	% Mean longitude
 	mLon = sun_mean_longitude (T0, UTC);
 
 	% Ecliptic Longitude
 	%   - Force to the range [0, 360)
-	eLon = mod ( mLon + ...     % Degrees
-               (1.915 - 0.0048 .* T0) .* sin(ma .* DEG2RAD) + ...
-               0.020 * sin (2 .* ma .* DEG2RAD), ...
-             360 );
+	eLon = mod ( ...
+		mLon + ...     % Degrees
+		((1.915 - 0.0048) * T0) .* sin (ma * DEG2RAD) + ...
+		0.020 * sin (2.0 * ma * DEG2RAD), ...
+		360.0 );
 end

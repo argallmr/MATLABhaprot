@@ -31,7 +31,7 @@ function [time, gei, geo, mag, gse, gsm, sm] = test_read_vectors(filename)
                       'HeaderLines',         49, ...
                       'MultipleDelimsAsOne',  1);
     fclose(fileID);
-    
+
     % Convert year, doy, hours, and minutes to MatLab datenum
     nPts  = length(data{1});
     hhmm = data{3};
@@ -40,7 +40,7 @@ function [time, gei, geo, mag, gse, gsm, sm] = test_read_vectors(filename)
            double(data{2})             + ...
            str2num(hhmm(:,1:2)) / 24.0 + ...
            str2num(hhmm(:,4:5)) / (24.0 * 60.0);
-    
+
     % Select components
     gei  = [data{4}  data{5}  data{6}];
     geo  = [data{7}  data{8}  data{9}];

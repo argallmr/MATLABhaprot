@@ -68,7 +68,7 @@ function T3 = gse2gsm (arg1, arg2, arg3, arg4, arg5)
 	% <psi, X>
 	sinPsi = sin ( -psi );
 	cosPsi = cos ( -psi );
-	
+
 	%       | 1   0    0  |
 	% T21 = | 0  cos  sin |
 	%       | 0 -sin  cos |

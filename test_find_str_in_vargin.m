@@ -22,7 +22,7 @@ function test_find_str_in_vargin (arg1, arg2)
 % 	  if ~isempty (iMJD1)
 % 	    mjd1 = logical (varargin {iMJD1 + 1})
 % 	  end
-% 	end  
+% 	end
 
 %   mjd0 = strcmp (varargin (nargin-1), 'MJD') % used with test_find_str_in_vargin (Date, vargin)
 %   if mjd0
@@ -33,7 +33,7 @@ function test_find_str_in_vargin (arg1, arg2)
 % 	  if ~isempty (iMJD1)
 % 	    mjd1 = logical (varargin {iMJD1 + 1})
 % 	  end
-% 	end  
+% 	end
 
 end
 

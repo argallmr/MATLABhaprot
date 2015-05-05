@@ -88,7 +88,7 @@ function julday = date2julday (date, varargin)
 	if isempty(fmt) && (ischar(date) || iscell(date))
 		fmt = 'yyyy-mm-dd HH:MM:SS';
 	end
-	
+
 	% DateNum or Date string? datevec returns doubles
   if isempty(fmt)
     [year, month, day, hour, minute, second] = datevec(date);

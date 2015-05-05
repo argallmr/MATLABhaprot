@@ -29,17 +29,17 @@ function [] = test_Hapgood()
 
     % Read data from file
     [time, gei, geo, mag, gse, gsm, sm] = test_read_vectors(test_file);
-    
+
 %-------------------------------------
 % Get Required Parameters            |
 %-------------------------------------
-    
+
     % Get Modified Julian Date and UT
     %   - Number of days since 17 Nov 1858
     mjd = date2julday(time, 'MJD', true);
     ut  = mod(mjd, 1) * 24.0;
     mjd = floor(mjd);
-    
+
     % Read IGRF coefficients.
     %   - Get year of data.
     %   - Read coefficients.
@@ -49,7 +49,7 @@ function [] = test_Hapgood()
     ig10 = find(n == 1 & m == 0 & strcmp(gh, 'g'), 1, 'first');
     ig11 = find(n == 1 & m == 1 & strcmp(gh, 'g'), 1, 'first');
     ih11 = find(n == 1 & m == 1 & strcmp(gh, 'h'), 1, 'first');
-    
+
     % Get the coefficients
     g10 = double(coef(ig10));
     g11 = double(coef(ig11));
@@ -58,37 +58,37 @@ function [] = test_Hapgood()
 %-------------------------------------
 % Create Transformations             |
 %-------------------------------------
-    
+
     % Create transformation matrices.
     T1 = gei2geo(mjd, ut);
     T2 = gei2gse(mjd, ut);
     T3 = gse2gsm(g10, g11, h11, mjd, ut);
     T4 = gsm2sm (g10, g11, h11, mjd, ut);
     T5 = geo2mag(g10, g11, h11);
-    
+
 %-------------------------------------
 % Transform from GSE to *            |
 %-------------------------------------
 		% GSE2GEI
 		%   gei = T2' * gse
     gei_hap = mrvector_rotate( permute(T2, [2,1,3]), gse);
-		
+
 		% GSE2GEO
 		%   geo = T1 * T2' * gse
     geo_hap = mrvector_rotate( T1, mrvector_rotate( permute(T2, [2,1,3]), gse) );
-		
+
 		% GSE2GSM
 		%   gsm = T3' * gse
     gsm_hap = mrvector_rotate( permute(T3, [2,1,3]), gse);
-		
+
 		% GSE2SM
 		%   sm = T4 * T3 * gse
     sm_hap  = mrvector_rotate( T4, mrvector_rotate(T3, gse) );
-		
+
 		% GSE2MAG
 		%   mag = T5 * T1 * T2' * gse
     mag_hap = mrvector_rotate( T5, mrvector_rotate( T1, mrvector_rotate( permute(T2, [2,1,3]), gse ) ) );
-    
+
 %-------------------------------------
 % Absolute difference                |
 %-------------------------------------
@@ -97,7 +97,7 @@ function [] = test_Hapgood()
     diff_gsm = mean( abs(gsm_hap - gsm) );
     diff_sm  = mean( abs(sm_hap  - sm)  );
     diff_mag = mean( abs(mag_hap - mag) );
-    
+
 %-------------------------------------
 % Percent difference                 |
 %-------------------------------------
@@ -106,7 +106,7 @@ function [] = test_Hapgood()
     perc_gsm = mean( abs(100.0 - gsm ./ gsm_hap .* 100.0) );
     perc_sm  = mean( abs(100.0 - sm  ./ sm_hap  .* 100.0) );
     perc_mag = mean( abs(100.0 - mag ./ mag_hap .* 100.0) );
-    
+
 %-------------------------------------
 % Output Answers                     |
 %-------------------------------------

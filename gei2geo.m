@@ -64,7 +64,7 @@ function T1 = gei2geo (mjd, UTC)
 	% <obliq, X>
 	sinTheta = sin(theta);
 	cosTheta = cos(theta);
-	
+
 	%      |  cos  sin  0 |
 	% T1 = | -sin  cos  0 |
 	%      |   0    0   1 |
