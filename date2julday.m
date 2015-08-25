@@ -31,11 +31,11 @@
 %
 % Examples:
 %   Convert a MATLAB date number to julian day.
-%     >> date2julday (datenum (2000, 01, 01, 12, 0, 0))    ACCEPTED
+%     >> date2julday( datenum(2000, 01, 01, 12, 0, 0 ) )   ACCEPTED
 %       2451545.0                                          2451545.0
 %
 %   Convert a MATLAB date number to modified julian day.
-%     >> date2julday (datenum (2000, 01, 01, 12, 0, 0), 'MJD', true)
+%     >> date2julday( datenum( 2000, 01, 01, 12, 0, 0 ), 'MJD', true )
 %       51544.5                                            51544.5
 %
 %   Convert an array of MATLAB date numbers to julian day.
@@ -46,8 +46,8 @@
 %       2456939.092361
 %
 %   Convert a cell array of date strings to julian days.
-%     >> dateStr = {'2014-10-08 14:13:00', '2014-10-08 14:13:00'}
-%     >> julday  = date2julday( dateStr, 'yyyy-mm-dd HH:MM:SS')
+%     >> dateStr = {'2014-10-08 14:13:00', '2014-10-08 14:13:00'};
+%     >> julday  = date2julday( dateStr, 'Format', 'yyyy-mm-dd HH:MM:SS')
 %       2456939.092361                                     2456939.092361
 %       2456939.092361
 %
