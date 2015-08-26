@@ -36,7 +36,7 @@ function T2 = gei2gse(mjd, UTC)
 	assert (nargin > 1, 'Usage: T2 = gei2gse(mjd, UTC).');
 
 	% Conversion to radians
-	deg2rad = pi / 360.0;
+	deg2rad = pi / 180.0;
 
 	% Number of points given
 	nPts = length(mjd);

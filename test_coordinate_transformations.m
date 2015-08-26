@@ -41,7 +41,8 @@ function [] = test_Hapgood()
 		[time, gei, geo, gm, gse, gsm, sm] = test_read_vectors(filename);
 
 		% Start with a single vector
-		t1   = time(1,:)';
+		t1_datnum = time(1,:)';
+		t1_utc    = mod(t1_datnum, 1) * 24;
 		gei1 = gei(1,:)';
 		geo1 = geo(1,:)';
 		gm1  = gm(1,:)';
@@ -72,10 +73,10 @@ function [] = test_Hapgood()
 %-------------------------------------
 % Transform from GEI to *            |
 %-------------------------------------
-	geo_hap =           T1 * gse1;
+	geo_hap =           T1 * gei1;
 	gse_hap =           T2 * gei1;
-%   gsm_hap =      T3 * T2 * gei1;
-%   sm_hap  = T4 * T3 * T2 * gei1;
+%	gsm_hap =      T3 * T2 * gei1;
+%	sm_hap  = T4 * T3 * T2 * gei1;
 
 %-------------------------------------
 % Absolute difference                |
@@ -106,4 +107,8 @@ function [] = test_Hapgood()
 	fprintf('GEI to GSE\n');
 	fprintf('  Absolute Difference: %0.4f %0.4f %0.4f\n', diff_gse);
 	fprintf('  Percent Difference:  %0.4f %0.4f %0.4f\n', perc_gse);
+	fprintf('\n');
+%	fprintf('GEI to GSM\n');
+%	fprintf('  Absolute Difference: %0.4f %0.4f %0.4f\n', diff_gsm);
+%	fprintf('  Percent Difference:  %0.4f %0.4f %0.4f\n', perc_gsm);
 end
