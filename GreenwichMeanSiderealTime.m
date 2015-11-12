@@ -35,9 +35,8 @@
 function theta = GreenwichMeanSiderealTime (Epoch2000, UTC)
 
 	assert (nargin > 1, 'Missing arguments for GreenwichMeanSiderealTime ().');
-	GaSC_rotations_lib
 
 	% Compute the Greenwich Mean Sidereal Time
 	% Hapgood units: degrees + deg/century * centuries + deg/hr * hr
-	theta = (100.461 + 36000.770 * Epoch2000 + 15.04107 * UTC) * DEG2RAD;
+	theta = (100.461 + 36000.770 * Epoch2000 + 15.04107 * UTC) * (pi/180);
 end
