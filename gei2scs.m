@@ -37,6 +37,7 @@
 % History:
 %   2014-10-14    Written by Matthew Argall
 %   2015-04-08    Vectorized to accept arrays as inputs. - MRA
+%   2015-08-29    Had rows and columns interchanged. Fixed. - MRA
 %
 function GEI2SCS = gei2scs (year, month, day, secs, RA, dec)
 
@@ -75,7 +76,7 @@ function GEI2SCS = gei2scs (year, month, day, secs, RA, dec)
 
 	% Transformation from GEI to SCS.
 	GEI2SCS        = zeros(3, 3, length(RA));
-	GEI2SCS(:,1,:) = scsx;
-	GEI2SCS(:,2,:) = scsy;
-	GEI2SCS(:,3,:) = scsz;
+	GEI2SCS(1,:,:) = scsx;
+	GEI2SCS(2,:,:) = scsy;
+	GEI2SCS(3,:,:) = scsz;
 end
