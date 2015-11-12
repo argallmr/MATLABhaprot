@@ -45,23 +45,24 @@
 % History:
 %   2014-10-14    Written by Matthew Argall
 %   2015-04-07    Vectorized by changing "*" to ".*". - MRA
+%   2015-08-24    Fixed typo in calculation of eLon. - MRA
 %--------------------------------------------------------------------------
 function eLon = sun_ecliptic_longitude (T0, UTC)
 
-	assert (nargin > 1, 'Missing arguments for sun_ecliptic_longitude ().');
+	assert (nargin > 1, 'Usage: ELON = sun_ecliptic_longitude(T0, UTC)');
 	DEG2RAD = pi / 360.0;
 
 	% Sun's Mean anomaly
-	ma = sun_mean_anomaly (T0, UTC);
+	ma = sun_mean_anomaly(T0, UTC);
 
 	% Mean longitude
-	mLon = sun_mean_longitude (T0, UTC);
+	mLon = sun_mean_longitude(T0, UTC);
 
 	% Ecliptic Longitude
 	%   - Force to the range [0, 360)
 	eLon = mod ( ...
-		mLon + ...     % Degrees
-		((1.915 - 0.0048) * T0) .* sin (ma * DEG2RAD) + ...
-		0.020 * sin (2.0 * ma * DEG2RAD), ...
-		360.0 );
+	             mLon + ...     % Degrees
+	             (1.915 - 0.0048 * T0) .* sind(ma) + ...
+	             0.020 * sind(2.0 * ma), ...
+	             360.0 );
 end

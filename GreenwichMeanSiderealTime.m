@@ -17,20 +17,24 @@
 %
 % Returns
 %   theta:     out, required, type = double
-%              Greenwich Mean Sidereal Time in radians.
+%              Greenwich Mean Sidereal Time in degrees.
 %
 % References:
-% See Hapgood Rotations Glossary.txt.
-% - https://www.spenvis.oma.be/help/background/coortran/coortran.html
-% - Hapgood, M. A. (1992). Space physics coordinate transformations:
-%   A user guide. Planetary and Space Science, 40 (5), 711?717.
-%   doi:http://dx.doi.org/10.1016/0032-0633 (92)90012-D
-% - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
-%   45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
+%   See Hapgood Rotations Glossary.txt.
+%   - https://www.spenvis.oma.be/help/background/coortran/coortran.html
+%   - Hapgood, M. A. (1992). Space physics coordinate transformations:
+%     A user guide. Planetary and Space Science, 40 (5), 711?717.
+%     doi:http://dx.doi.org/10.1016/0032-0633 (92)90012-D
+%   - Hapgood, M. A. (1997). Corrigendum. Planetary and Space Science,
+%     45 (8), 1047 ?. doi:http://dx.doi.org/10.1016/S0032-0633 (97)80261-9
 %
-% Last update: 2014-10-14
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
+%
+% History
+%   2014-10-14      Written by Matthew Argall
+%   2015-08-24      Output in degrees. Force between [0,360). - MRA
+%
 %--------------------------------------------------------------------------
 function theta = GreenwichMeanSiderealTime (Epoch2000, UTC)
 
@@ -38,5 +42,5 @@ function theta = GreenwichMeanSiderealTime (Epoch2000, UTC)
 
 	% Compute the Greenwich Mean Sidereal Time
 	% Hapgood units: degrees + deg/century * centuries + deg/hr * hr
-	theta = (100.461 + 36000.770 * Epoch2000 + 15.04107 * UTC) * (pi/180);
+	theta = mod(100.461 + 36000.770 * Epoch2000 + 15.04107 * UTC, 360);
 end

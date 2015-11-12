@@ -62,8 +62,8 @@ function T1 = gei2geo (mjd, UTC)
 	%   - A CW pure rotation about Z by angle theta
 
 	% <obliq, X>
-	sinTheta = sin(theta);
-	cosTheta = cos(theta);
+	sinTheta = sind(theta);
+	cosTheta = cosd(theta);
 
 	%      |  cos  sin  0 |
 	% T1 = | -sin  cos  0 |
@@ -74,4 +74,5 @@ function T1 = gei2geo (mjd, UTC)
 	T1(2,1,:) = -sinTheta;
 	T1(2,2,:) =  cosTheta;
 	T1(3,3,:) =  1;
+
 end

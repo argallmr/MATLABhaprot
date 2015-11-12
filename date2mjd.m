@@ -41,7 +41,15 @@ function mjd = date2mjd(year, month, day)
 
 	% If only 1 argument passed, expect it to be an ISO date yyyy-mm-dd of some sort.
 	if nargin == 1
-		mjd = datenum(year, 'yyyy-mm-dd') - 678942.0;
+		% Date string
+		if ischar(year)
+			date_vector = year;
+			mjd         = datenum(date_vector, 'yyyy-mm-dd') - 678942.0;
+		% Date number
+		else
+			date_number = year;
+			mjd         = date_number - 678942.0;
+		end
 	else
 		% Adjust date using MATLAB datenum base, January 0, 0000
 		% datenum (1858, 11, 17) = 678942.0

@@ -31,12 +31,12 @@
 %   2014-10-14    Written by Matthew Argall
 %   2015-04-07    Vectorized to accept arrays. - MRA
 %--------------------------------------------------------------------------
-function T2 = gei2gse (mjd, UTC)
+function T2 = gei2gse(mjd, UTC)
 
-	assert (nargin > 1, 'Missing arguments for gei2gse ().');
+	assert (nargin > 1, 'Usage: T2 = gei2gse(mjd, UTC).');
 
 	% Conversion to radians
-	deg2rad = pi / 360.0;
+	deg2rad = pi / 180.0;
 
 	% Number of points given
 	nPts = length(mjd);
@@ -57,7 +57,7 @@ function T2 = gei2gse (mjd, UTC)
 
 	% <obliq, X>
 	sinObliq = sin( obliq );
-	cosObliq = cos( obliq);
+	cosObliq = cos( obliq );
 
 	%       | 1   0    0  |
 	% T21 = | 0  cos  sin |
@@ -70,8 +70,8 @@ function T2 = gei2gse (mjd, UTC)
 	T21(3,3,:) =  cosObliq;
 
 	% <eLon, X>
-	sinLon = sin (eLon);
-	cosLon = cos (eLon);
+	sinLon = sin( eLon );
+	cosLon = cos( eLon );
 
 	%       |  cos  sin  0 |
 	% T22 = | -sin  cos  0 |
