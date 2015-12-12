@@ -3,26 +3,26 @@
 %   gsm2sm
 %
 % Purpose
-%   Produce a rotation from GSE to GSM.
+%   Produce a rotation from GSM to SM.
 %
-%   Calling Sequence:
+% Calling Sequence:
 %   T4 = gse2gsm (PSI)
-%   Returns T4, the rotation matrix from GSE to GSM using PSI, the
-%   angle between the GSE Z-axis and the dipole axis.
+%     Returns T4, the rotation matrix from GSE to GSM using PSI, the
+%     angle between the GSE Z-axis and the dipole axis.
 %
 %   T4 = gse2gsm (X, Y, Z)
-%   X, Y and Z are the x-, y- and z-components of the unit vector
-%   describing the dipole axis direction in GSE.
+%     X, Y and Z are the x-, y- and z-components of the unit vector
+%     describing the dipole axis direction in GSE.
 %
 %   T4 = gse2gsm (phi, lambda, MJD, UTC)
-%   PHI and LAMBDA are the geocentric latitude and longitude of the
-%   dipole North geomagnetic pole (GEO spherical coordinates). MJD
-%   is the Modified Julian Date measured until 00:00 UTC on the date
-%   of interest. UTC is Universal Time in fractional number of
-%   hours.
+%     PHI and LAMBDA are the geocentric latitude and longitude of the
+%     dipole North geomagnetic pole (GEO spherical coordinates). MJD
+%     is the Modified Julian Date measured until 00:00 UTC on the date
+%     of interest. UTC is Universal Time in fractional number of
+%     hours.
 %
-%   T4 = gse2gsm (g01, g11, h11, MJD, UTC)
-%   First order IGRF coefficients, adjusted to the time of interest.
+%   T4 = gse2gsm (g10, g11, h11, MJD, UTC)
+%       First order IGRF coefficients, adjusted to the time of interest.
 %
 % Returns
 %   T3: out, required, type = double

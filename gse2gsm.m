@@ -6,21 +6,21 @@
 %   Produce a rotation from GSE to GSM.
 %
 %   Calling Sequence:
-%   T2 = gse2gsm (PSI)
+%   T3 = gse2gsm(PSI)
 %   Calculate the rotation matrix from GSE to GSM using PSI, the
 %   angle between the GSEz and the dipole axis.
 %
-%   T2 = gse2gsm (X, Y, Z)
+%   T3 = gse2gsm(X, Y, Z)
 %   X, Y and Z are the x-, y- and z-components of the UNIT vector
 %   describing the dipole axis direction in GSE.
 %
-%   T2 = gse2gsm (phi, lambda, MJD, UTC)
+%   T3 = gse2gsm(phi, lambda, MJD, UTC)
 %   PHI and LAMBDA are the geocentric latitude and longitude of the
 %   dipole North geomagnetic pole (GEO spherical coordinates). MJD
 %   is the Modified Julian Date measured until 00:00 UTC on the date
 %   of interest. UTC is in decimal hours.
 %
-%   T2 = gse2gsm (g01, g11, h11, MJD, UTC)
+%   T3 = gse2gsm(g10, g11, h11, MJD, UTC)
 %   First order IGRF coefficients, adjusted to the time of interest.
 %
 % Returns
@@ -40,7 +40,7 @@
 % MATLAB release(s) MATLAB 7.12 (R2011a), 8.3.0.532 (R2014a)
 % Required Products None
 %--------------------------------------------------------------------------
-function T3 = gse2gsm (arg1, arg2, arg3, arg4, arg5)
+function T3 = gse2gsm(arg1, arg2, arg3, arg4, arg5)
 
 	assert (nargin > 0, 'Missing arguments for gse2gsm ().');
 
@@ -69,9 +69,9 @@ function T3 = gse2gsm (arg1, arg2, arg3, arg4, arg5)
 	sinPsi = sin ( -psi );
 	cosPsi = cos ( -psi );
 
-	%       | 1   0    0  |
-	% T21 = | 0  cos  sin |
-	%       | 0 -sin  cos |
+	%      | 1   0    0  |
+	% T3 = | 0  cos  sin |
+	%      | 0 -sin  cos |
 	T3        =  zeros(3, 3, length(psi));
 	T3(1,1,:) =  1;
 	T3(2,2,:) =  cosPsi;

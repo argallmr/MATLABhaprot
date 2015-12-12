@@ -10,15 +10,15 @@
 %
 %   Calling Sequence:
 %   T5 = gse2gsm (lat, lon)
-%   lat and lon are the geocentric latitude and longitude of the
-%   dipole North geomagnetic pole (GEO spherical coordinates).
+%     lat and lon are the geocentric latitude and longitude of the
+%     dipole North geomagnetic pole (GEO spherical coordinates).
 %
-%   T5 = gse2gsm (g10, g11, h11, MJD, UTC)
-%   First order IGRF coefficients, adjusted to the time of interest.
+%   T5 = gse2gsm(g10, g11, h11, MJD, UTC)
+%     First order IGRF coefficients, adjusted to the time of interest.
 %
 % Returns
 %   T5: out, required, type = double
-%   Transformation matrix from GEO to MAG.
+%     Transformation matrix from GEO to MAG.
 %
 % References:
 % See Hapgood Rotations Glossary.txt.
@@ -36,9 +36,9 @@
 %   2014-10-14    Written by Matthew Argall
 %                 Vectorized to accept array inputs. - MRA
 %--------------------------------------------------------------------------
-function T5 = geo2mag (arg1, arg2, arg3)
+function T5 = geo2mag(arg1, arg2, arg3)
 
-	assert (nargin > 1, 'Missing arguments for geo2mag ().');
+	assert (nargin > 1, 'Missing arguments for geo2mag().');
 
 	% Dipole axis.
 	switch nargin
@@ -59,13 +59,13 @@ function T5 = geo2mag (arg1, arg2, arg3)
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%
 	% The transformation from GSM to SM, then is
-	%   - T4 = <lat - 90, Y> <lon, Z>
+	%   - T5 = <lat - 90, Y> <lon, Z>
 	%   - A pure rotation about Z by angle lon
 	%   - A pure rotation about Y by angle (lat - 90)
 
 	% <lon, Z>
-	sinLon = sin (lon);  %sind?
-	cosLon = cos (lon);
+	sinLon = sin(lon);  %sind?
+	cosLon = cos(lon);
 
 	%      |  cos  sin  0 |
 	% T1 = | -sin  cos  0 |
@@ -91,6 +91,6 @@ function T5 = geo2mag (arg1, arg2, arg3)
 	T52(3,1,:) = -sinLat;
 	T52(3,3,:) =  cosLat;
 
-  % Create the transformation
-  T5 = mrmultiply_matrices(T52, T51);
+	% Create the transformation
+	T5 = mrmultiply_matrices(T52, T51);
 end
